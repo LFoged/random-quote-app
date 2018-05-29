@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="icon" href="./assets/quote-logo.png">
+  <link rel="stylesheet" href="./css/style.css">
+  <title>Quoter</title>
+</head>
+<body>
+  <div class="container">
+    <main>
+      <section class="display-section">
+        <h1 class="display-quote"></h1>
+        <h3 class="display-author"></h3>
+      </section>
+
+      <section class="buttons">
+        <section class="quote-buttons">
+          <button class="btn" id="random">Random</button>
+          <button class="btn" id="inspire">Inspirational</button>
+          <button class="btn" id="program">Programming</button>
+        </section>
+
+        <section class="links">
+          <button class="btn link" id="tweet-btn">
+            <a href="" class="link" id="tweet-link" target="_blank">
+              Tweet Quote
+            </a>
+          </button>
+          <button class="btn link" id="wiki-btn">
+            <a href="" class="link" id="wiki-link" target="_blank">
+              Wiki Author
+            </a>
+          </button>
+        </section>
+
+        <section class="fav-buttons">
+          <button class="btn" id="new-fav">Add to Favorites</button>
+          <button class="btn" id="clear-all-fav" hidden>Clear Favorites</button>
+        </section>
+
+      </section>
+    </main>
+
+    <section class="favorites-section"></section>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
