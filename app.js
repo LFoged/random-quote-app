@@ -31,6 +31,7 @@ const favSection = doc.querySelector('.favorites-section');
 const newElement = (element, className) => {
   const newEl = doc.createElement(element);
   newEl.className = className;
+
   return newEl;
 };
 
@@ -46,6 +47,7 @@ const getQuote = (quoteType) => {
       xhr.onload = () => {
         if (xhr.status !== 200) return showAlert('error');
         const response = JSON.parse(xhr.responseText);
+        
         return formatResponse(response);
       };
       xhr.onerror = (err) => showAlert('error');
