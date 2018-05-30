@@ -5,9 +5,9 @@ Simple app that gets random quotes from 3 different APIs, depending on type of q
 
 ### User stories
 - User can select to see a:
--- random quote from topic
--- random inspirational quote
--- random programming quote
+1. random quote from topic
+2. random inspirational quote
+3. random programming quote
 
 - User can click a button to tweet quote
 
@@ -20,9 +20,9 @@ Simple app that gets random quotes from 3 different APIs, depending on type of q
 
 ### Details
 - Different type of AJAX GET request made for each quote type - just for practice:
--- 'random' quotes = XMLHttpRequest()
--- 'inspirational' quotes = JSONP
--- 'programming' quotes = fetch()
+1. 'random' quotes = XMLHttpRequest()
+2. 'inspirational' quotes = JSONP
+3. 'programming' quotes = fetch()
 - No design patterns used. Functions are function expressions (arrow functions)
 
 ### Author
