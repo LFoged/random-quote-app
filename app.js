@@ -144,9 +144,9 @@ const removeFavorite = (element) => {
   const favDiv = element.parentElement.parentElement;
   const favIndex = parseInt(favDiv.className.split(' ').slice(1));
   const quotes = JSON.parse(localStorage.getItem('quotes'));
-  quotes.splice(favIndex, 1);
-  if (!quotes.length) return clearFavorites();
-  localStorage.setItem('quotes', JSON.stringify(quotes));
+  const newQuotes = quotes.filter((quote, index) => index !== favIndex);
+  if (!newQuotes.length) return clearFavorites();
+  localStorage.setItem('quotes', JSON.stringify(newQuotes));
   showAlert('success', 'Quote removed from favorites!')
 
   return printFavorites();
@@ -170,8 +170,7 @@ const printFavorites = () => {
     clearFavBtn.hidden = true;
   } else {
     const docFragment = doc.createDocumentFragment();
-    const quotes = JSON.parse(localStorage.quotes);
-
+    const quotes = JSON.parse(localStorage.getItem('quotes'));
     quotes.map((quote, index) => {
       const favDiv = newElement('div', `fav ${index}`);
       const favText = newElement('h4', 'fav-text');
