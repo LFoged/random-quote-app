@@ -1,36 +1,23 @@
 'use strict';
 
-/**************************************************************
- * RANDOM QUOTE APP.
- * 
- * Simple structure - no design patterns used
- * 
- * Diff. request type used for each quote type - for practice
- * Request types: jsonP, XMLHttpRequest, fetch
- * localStorage used to persist 'favorite quotes'
- * 'init' function (at bottom) - starts program
-**************************************************************/ 
-
-
 // GLOBAL VARIABLES
 const doc = document;
 const displaySection = doc.querySelector('.display-section');
 const displayQuote = doc.querySelector('.display-quote');
 const displayAuthor = doc.querySelector('.display-author');
 const quoteButtons = doc.querySelector('.quote-buttons');
-const tweetBtn = doc.querySelector('#tweet-btn');
 const tweetLink = doc.querySelector('#tweet-link');
-const wikiBtn = doc.querySelector('#wiki-btn');
 const wikiLink = doc.querySelector('#wiki-link');
 const newFavBtn = doc.querySelector('#new-fav');
 const clearFavBtn = doc.querySelector('#clear-all-fav');
 const favSection = doc.querySelector('.favorites-section');
 
 
-// FUNCTION - create an element & assign a className
-const newElement = (element, className) => {
+// FUNCTION - create element, assign className. Assign value to attribute if present 
+const newElement = (element, classNm, attribute=null, value=null) => {
   const newEl = doc.createElement(element);
-  newEl.className = className;
+  newEl.className = classNm;
+  if (attribute && value) newEl[attribute] = value;
 
   return newEl;
 };
@@ -55,8 +42,9 @@ const getQuote = (quoteType) => {
     },
 
     inspire: () => {
-      const scriptElement = newElement('script', 'json-p');
-      scriptElement.src = 'https://api.forismatic.com/api/1.0/?method=getQuote&format=jsonp&lang=en&jsonp=formatResponse';
+      const scriptElement = newElement('script', 'json-p', 'src',
+        'https://api.forismatic.com/api/1.0/?method=getQuote&format=jsonp&lang=en&jsonp=formatResponse'
+      );
       doc.body.appendChild(scriptElement);
       // remove appended script immediately
       if (doc.querySelector('.json-p')) return doc.body.lastChild.remove();
@@ -89,20 +77,23 @@ const formatResponse = (data) => {
 
 // FUNCTION - print quote & author to DOM
 const printQuote = (quoteObj) => {
-  displayQuote.textContent = quoteObj.quote;
-  displayAuthor.textContent = quoteObj.author;
+  return (
+    displayQuote.textContent = quoteObj.quote,
+    displayAuthor.textContent = quoteObj.author
+  );
+  
 };
 
 
 // FUNCTION - set 'href' attr. on tweet & wiki buttons
 const setLinks = (quoteObj) => {
-  // if author = 'unknown' disable wiki link (btn) & cursor & change textContent  
-  if (quoteObj.author.toLowerCase() === 'unknown') {
-    wikiBtn.disabled = true;
-    wikiBtn.style.cursor = 'default';
+  // if author = 'unknown' hide wiki link (btn)
+  const authorCheck = quoteObj.author.toLowerCase();
+  if (authorCheck === 'unknown' || authorCheck === 'anonymous') {
+    wikiLink.hidden = true;
     wikiLink.href = '';
   } else {
-    wikiBtn.disabled = false;
+    wikiLink.hidden = false;
     wikiLink.href = `https://en.wikipedia.org/wiki/${quoteObj.author.replace(/\s/, '_')}`;
   }
   tweetLink.href = `https://twitter.com/home/?status="${quoteObj.quote}" - ${quoteObj.author}`;
@@ -173,12 +164,11 @@ const printFavorites = () => {
     const quotes = JSON.parse(localStorage.getItem('quotes'));
     quotes.map((quote, index) => {
       const favDiv = newElement('div', `fav ${index}`);
-      const favText = newElement('h4', 'fav-text');
-      const favRemove = newElement('span', 'fav-remove');
-
-      favText.textContent = `"${quote.quote}" - ${quote.author}`;
-      favRemove.textContent = '     X    ';
-
+      const favText = newElement(
+        'h4', 'fav-text', 'textContent', `"${quote.quote}" - ${quote.author}`
+      );
+      const favRemove = newElement('span', 'fav-remove', 'textContent', '  X  ');
+      
       favText.appendChild(favRemove);
       favDiv.appendChild(favText);
       docFragment.appendChild(favDiv);
