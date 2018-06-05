@@ -61,7 +61,6 @@ const getQuote = (quoteType) => {
   return makeRequest[quoteType]();
 };
 
-
 // FUNCTION - format data into own obj. Pass to 'printQuote' & 'setLinks'
 const formatResponse = (data) => {
   const quote = {
@@ -74,16 +73,13 @@ const formatResponse = (data) => {
   return printQuote(quote), setLinks(quote);
 };
 
-
 // FUNCTION - print quote & author to DOM
 const printQuote = (quoteObj) => {
   return (
     displayQuote.textContent = quoteObj.quote,
     displayAuthor.textContent = quoteObj.author
   );
-  
 };
-
 
 // FUNCTION - set 'href' attr. on tweet & wiki buttons
 const setLinks = (quoteObj) => {
@@ -100,7 +96,6 @@ const setLinks = (quoteObj) => {
 };
 
 
-
 // LOCAL STORAGE FUNCTIONS
 // FUNCTION - store quote to localStorage
 const addFavorite = () => {
@@ -109,7 +104,7 @@ const addFavorite = () => {
     author: displayAuthor.textContent
   };
 
-  if (localStorage.length < 1) {
+  if (!localStorage.getItem('quotes')) {
     const quotes = [newQuote];
     localStorage.setItem('quotes', JSON.stringify(quotes));
   } else {
@@ -129,7 +124,6 @@ const addFavorite = () => {
   return printFavorites();
 };
 
-
 // FUNCTION - remove single quote from local storage & reprint list
 const removeFavorite = (element) => {
   const favDiv = element.parentElement.parentElement;
@@ -143,7 +137,6 @@ const removeFavorite = (element) => {
   return printFavorites();
 };
 
-
 // FUNCTION - clears all quotes in localStorage
 const clearFavorites = () => {
   localStorage.removeItem('quotes');
@@ -151,7 +144,6 @@ const clearFavorites = () => {
 
   return printFavorites();
 };
-
 
 // FUNCTION - print favorite quotes, stored in localStorage, to DOM 
 const printFavorites = () => {
@@ -191,7 +183,6 @@ const showAlert = (alertType, msg='Oh fudge! Something went wrong') => {
     if (doc.querySelector('.alert')) return doc.querySelector('.alert').remove();
   }, 2500);
 };
-
 
 
 // FUNCTION - initialize program. Get 'random' quote onload & set eventListeners
