@@ -24,7 +24,7 @@ const newElement = (element, classNm, attribute=null, value=null) => {
 
 
 // REQUEST & QUOTE FUNCTIONS
-// FUNCTION - AJAX request to get quote => response to 'formatResponse' 
+// FUNCTION - request quote by quoteType => response to 'formatResponse' 
 const getQuote = (quoteType) => {
   // diff. req. type (jsonP, XHR, fetch) for each quote type - practice
   const makeRequest = {
@@ -83,7 +83,7 @@ const printQuote = (quoteObj) => {
 
 // FUNCTION - set 'href' attr. on tweet & wiki buttons
 const setLinks = (quoteObj) => {
-  // if author = 'unknown' hide wiki link (btn)
+  // if author = 'unknown' or 'anonymous' hide wiki link (btn)
   const authorCheck = quoteObj.author.toLowerCase();
   if (authorCheck === 'unknown' || authorCheck === 'anonymous') {
     wikiLink.hidden = true;
@@ -103,21 +103,22 @@ const addFavorite = () => {
     quote: displayQuote.textContent,
     author: displayAuthor.textContent
   };
+  let updatedQuotes;
 
   if (!localStorage.getItem('quotes')) {
-    const quotes = [newQuote];
+    updatedQuotes = [...newQuote];
     localStorage.setItem('quotes', JSON.stringify(quotes));
   } else {
-    const quotes = JSON.parse(localStorage.getItem('quotes'));
-    if (quotes.some((quote) => quote.author === newQuote.author 
+    const currentQuotes = JSON.parse(localStorage.getItem('quotes'));
+    if (currentQuotes.some((quote) => quote.author === newQuote.author 
       && quote.quote === newQuote.quote)) {
         return showAlert('error', 'This quote is already in your favorites');
     }
-    if (quotes.length >= 6) {
-      return showAlert('error', '6 quotes stored. Remove one first, to make space')
+    if (currentQuotes.length >= 6) {
+      return showAlert('error', '6 quotes already stored. Remove one first, to make space');
     }
-    quotes.push(newQuote);
-    localStorage.setItem('quotes', JSON.stringify(quotes));
+    updatedQuotes = [...currentQuotes, newQuote];
+    localStorage.setItem('quotes', JSON.stringify(updatedQuotes));
   }
   showAlert('success', 'Quote added to your favorites!')
   
