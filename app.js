@@ -13,13 +13,22 @@ const clearFavBtn = doc.querySelector('#clear-all-fav');
 const favSection = doc.querySelector('.favorites-section');
 
 
-// FUNCTION - create element, assign className. Assign value to attribute if present 
+// FUNCTION - create element, assign className. Assign val. to attr. if present 
 const newElement = (element, classNm, attribute=null, value=null) => {
   const newEl = doc.createElement(element);
   newEl.className = classNm;
   if (attribute && value) newEl[attribute] = value;
 
   return newEl;
+};
+
+// FUNCTION - remove child elements (used by 'printFavorites' func.)
+const removeChildNodes = (element) => {
+  if (element.hasChildNodes()) {
+    element.removeChild(element.firstChild);
+
+    return removeChildNodes(element);
+  }
 };
 
 
@@ -149,7 +158,7 @@ const clearFavorites = () => {
 // FUNCTION - print favorite quotes, stored in localStorage, to DOM 
 const printFavorites = () => {
   // 1st remove all favorites from DOM before printing, to ensure no duplicates
-  while (favSection.hasChildNodes()) favSection.removeChild(favSection.firstChild);
+  removeChildNodes(favSection);
   if (!localStorage.length) {
     clearFavBtn.hidden = true;
   } else {
@@ -160,7 +169,7 @@ const printFavorites = () => {
       const favText = newElement(
         'h4', 'fav-text', 'textContent', `"${quote.quote}" - ${quote.author}`
       );
-      const favRemove = newElement('span', 'fav-remove', 'textContent', '  X  ');
+      const favRemove = newElement('span', 'fav-remove', 'textContent', ' X ');
       
       favText.appendChild(favRemove);
       favDiv.appendChild(favText);
@@ -181,7 +190,7 @@ const showAlert = (alertType, msg='Oh fudge! Something went wrong') => {
   // check if any 'alertDiv' in DOM already & append if none. Remove after 2.5s.
   if (!doc.querySelector('.alert')) displaySection.insertBefore(alertDiv, displayQuote);
   setTimeout(() => {
-    if (doc.querySelector('.alert')) return doc.querySelector('.alert').remove();
+    if (doc.querySelector('.alert')) doc.querySelector('.alert').remove();
   }, 2500);
 };
 
@@ -190,7 +199,7 @@ const showAlert = (alertType, msg='Oh fudge! Something went wrong') => {
 const init = (() => {
   getQuote('random');
   quoteButtons.addEventListener('click', (event) => {
-    if (event.target.tagName === 'BUTTON') return getQuote(event.target.id);
+    if (event.target.tagName === 'BUTTON') getQuote(event.target.id);
   });
   // favorites (localStorage related functions) eventListeners
   if (localStorage.length) printFavorites();
@@ -198,6 +207,6 @@ const init = (() => {
   clearFavBtn.addEventListener('click', clearFavorites);
   // event listener to remove individual quotes from favorite list
   favSection.addEventListener('click', (event) => {
-    if (event.target.className === 'fav-remove') return removeFavorite(event.target);
+    if (event.target.className === 'fav-remove') removeFavorite(event.target);
   });
 })();
