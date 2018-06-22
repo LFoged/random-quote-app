@@ -1,21 +1,20 @@
 'use strict';
 
 // GLOBAL VARIABLES
-const doc = document;
-const displaySection = doc.querySelector('.display-section');
-const displayQuote = doc.querySelector('.display-quote');
-const displayAuthor = doc.querySelector('.display-author');
-const quoteButtons = doc.querySelector('.quote-buttons');
-const tweetLink = doc.querySelector('#tweet-link');
-const wikiLink = doc.querySelector('#wiki-link');
-const newFavBtn = doc.querySelector('#new-fav');
-const clearFavBtn = doc.querySelector('#clear-all-fav');
-const favSection = doc.querySelector('.favorites-section');
+const displaySection = document.querySelector('.display-section');
+const displayQuote = document.querySelector('.display-quote');
+const displayAuthor = document.querySelector('.display-author');
+const quoteButtons = document.querySelector('.quote-buttons');
+const tweetLink = document.querySelector('#tweet-link');
+const wikiLink = document.querySelector('#wiki-link');
+const newFavBtn = document.querySelector('#new-fav');
+const clearFavBtn = document.querySelector('#clear-all-fav');
+const favSection = document.querySelector('.favorites-section');
 
 
 // FUNCTION - create element, assign className. Assign val. to attr. if present 
-const newElement = (element, classNm, attribute=null, value=null) => {
-  const newEl = doc.createElement(element);
+const makeEl = (element, classNm, attribute=null, value=null) => {
+  const newEl = document.createElement(element);
   newEl.className = classNm;
   if (attribute && value) newEl[attribute] = value;
 
@@ -23,11 +22,11 @@ const newElement = (element, classNm, attribute=null, value=null) => {
 };
 
 // FUNCTION - remove child elements (used by 'printFavorites' func.)
-const removeChildNodes = (element) => {
+const removeKids = (element) => {
   if (element.hasChildNodes()) {
     element.removeChild(element.firstChild);
 
-    return removeChildNodes(element);
+    return removeKids(element);
   }
 };
 
@@ -35,7 +34,7 @@ const removeChildNodes = (element) => {
 // REQUEST & QUOTE FUNCTIONS
 // FUNCTION - request quote by quoteType => response to 'formatResponse' 
 const getQuote = (quoteType) => {
-  // diff. req. type (jsonP, XHR, fetch) for each quote type - practice
+  // diff. req. type (XHR, jsonP, fetch) for each quoteType - for practice
   const makeRequest = {
     random: () => {
       const xhr = new XMLHttpRequest();
@@ -51,12 +50,12 @@ const getQuote = (quoteType) => {
     },
 
     inspire: () => {
-      const scriptElement = newElement('script', 'json-p', 'src',
+      const scriptElement = makeEl('script', 'json-p', 'src',
         'https://api.forismatic.com/api/1.0/?method=getQuote&format=jsonp&lang=en&jsonp=formatResponse'
       );
-      doc.body.appendChild(scriptElement);
+      document.body.appendChild(scriptElement);
       // remove appended script immediately
-      if (doc.querySelector('.json-p')) return doc.body.lastChild.remove();
+      if (document.querySelector('.json-p')) return document.body.lastChild.remove();
     },
 
     program: () => {
@@ -79,7 +78,7 @@ const formatResponse = (data) => {
       || data.author
   };
 
-  return printQuote(quote), setLinks(quote);
+  return (printQuote(quote), setLinks(quote));
 };
 
 // FUNCTION - print quote & author to DOM
@@ -113,10 +112,8 @@ const addFavorite = () => {
     author: displayAuthor.textContent
   };
   let updatedQuotes;
-
   if (!localStorage.getItem('quotes')) {
-    updatedQuotes = [...newQuote];
-    localStorage.setItem('quotes', JSON.stringify(quotes));
+    updatedQuotes = [newQuote];
   } else {
     const currentQuotes = JSON.parse(localStorage.getItem('quotes'));
     if (currentQuotes.some((quote) => quote.author === newQuote.author 
@@ -127,8 +124,8 @@ const addFavorite = () => {
       return showAlert('error', '6 quotes already stored. Remove one first, to make space');
     }
     updatedQuotes = [...currentQuotes, newQuote];
-    localStorage.setItem('quotes', JSON.stringify(updatedQuotes));
   }
+  localStorage.setItem('quotes', JSON.stringify(updatedQuotes));
   showAlert('success', 'Quote added to your favorites!')
   
   return printFavorites();
@@ -139,9 +136,9 @@ const removeFavorite = (element) => {
   const favDiv = element.parentElement.parentElement;
   const favIndex = parseInt(favDiv.className.split(' ').slice(1));
   const quotes = JSON.parse(localStorage.getItem('quotes'));
-  const newQuotes = quotes.filter((quote, index) => index !== favIndex);
-  if (!newQuotes.length) return clearFavorites();
-  localStorage.setItem('quotes', JSON.stringify(newQuotes));
+  const updatedQuotes = quotes.filter((quote, index) => index !== favIndex);
+  if (!updatedQuotes.length) return clearFavorites();
+  localStorage.setItem('quotes', JSON.stringify(updatedQuotes));
   showAlert('success', 'Quote removed from favorites!')
 
   return printFavorites();
@@ -158,55 +155,57 @@ const clearFavorites = () => {
 // FUNCTION - print favorite quotes, stored in localStorage, to DOM 
 const printFavorites = () => {
   // 1st remove all favorites from DOM before printing, to ensure no duplicates
-  removeChildNodes(favSection);
-  if (!localStorage.length) {
-    clearFavBtn.hidden = true;
-  } else {
-    const docFragment = doc.createDocumentFragment();
-    const quotes = JSON.parse(localStorage.getItem('quotes'));
-    quotes.map((quote, index) => {
-      const favDiv = newElement('div', `fav ${index}`);
-      const favText = newElement(
-        'h4', 'fav-text', 'textContent', `"${quote.quote}" - ${quote.author}`
-      );
-      const favRemove = newElement('span', 'fav-remove', 'textContent', ' X ');
-      
-      favText.appendChild(favRemove);
-      favDiv.appendChild(favText);
-      docFragment.appendChild(favDiv);
-    });
-    clearFavBtn.removeAttribute('hidden');
+  removeKids(favSection);
+  if (!localStorage.length) return clearFavBtn.hidden = true;
+  const quotes = JSON.parse(localStorage.getItem('quotes'));
+  const fragment = document.createDocumentFragment();
 
-    return favSection.appendChild(docFragment);
-  }
+  const prepFavEls = (quote, index) => {
+    const favDiv = makeEl('div', `fav ${index}`);
+    const favText = makeEl(
+      'h4', 'fav-text', 'textContent', `"${quote.quote}" - ${quote.author}`
+    );
+    const favRemove = makeEl('span', 'fav-remove', 'textContent', ' X ');
+    favText.appendChild(favRemove);
+    favDiv.appendChild(favText);
+
+    return favDiv;
+  };
+
+  const favEls = quotes.map(prepFavEls);
+  favEls.map((favEl) => fragment.appendChild(favEl));
+  clearFavBtn.removeAttribute('hidden');
+
+  return favSection.appendChild(fragment);
 };
 
 
 // USER ALERT FUNCTION
 // FUNCTION - create & display <div> with alert message to DOM 
 const showAlert = (alertType, msg='Oh fudge! Something went wrong') => {
-  const alertDiv = newElement('div', `alert ${alertType}`);
-  alertDiv.appendChild(doc.createTextNode(msg));
-  // check if any 'alertDiv' in DOM already & append if none. Remove after 2.5s.
-  if (!doc.querySelector('.alert')) displaySection.insertBefore(alertDiv, displayQuote);
-  setTimeout(() => {
-    if (doc.querySelector('.alert')) doc.querySelector('.alert').remove();
-  }, 2500);
+  if (!document.querySelector('.alert')) {
+    // if no alert - create one, append to DOM & remove after 2.5s
+    const alertDiv = makeEl('div', `alert ${alertType}`);
+    alertDiv.appendChild(document.createTextNode(msg));
+    displaySection.insertBefore(alertDiv, displayQuote);
+    setTimeout(() => {
+      document.querySelector('.alert').remove();
+    }, 2500);
+  }
 };
 
 
 // FUNCTION - initialize program. Get 'random' quote onload & set eventListeners
 const init = (() => {
   getQuote('random');
-  quoteButtons.addEventListener('click', (event) => {
-    if (event.target.tagName === 'BUTTON') getQuote(event.target.id);
-  });
-  // favorites (localStorage related functions) eventListeners
   if (localStorage.length) printFavorites();
+  // event listeners
+  quoteButtons.addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON') getQuote(e.target.id);
+  });  
   newFavBtn.addEventListener('click', addFavorite);
   clearFavBtn.addEventListener('click', clearFavorites);
-  // event listener to remove individual quotes from favorite list
-  favSection.addEventListener('click', (event) => {
-    if (event.target.className === 'fav-remove') removeFavorite(event.target);
+  favSection.addEventListener('click', (e) => {
+    if (e.target.className === 'fav-remove') removeFavorite(e.target);
   });
 })();
