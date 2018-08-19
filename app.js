@@ -163,7 +163,7 @@ const printFavorites = () => {
   const prepFavEls = (quote, index) => {
     const favDiv = makeEl('div', `fav ${index}`);
     const favText = makeEl(
-      'h4', 'fav-text', 'textContent', `"${quote.quote}" - ${quote.author}`
+      'p', 'fav-text', 'textContent', `"${quote.quote}" - ${quote.author}`
     );
     const favRemove = makeEl('span', 'fav-remove', 'textContent', ' X ');
     favText.appendChild(favRemove);

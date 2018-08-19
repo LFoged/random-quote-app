@@ -20,5 +20,17 @@ body {
 }
 
 .container {
- margin: 0 auto;
+ text-align: center;
+ margin: 3.5rem auto;
+ max-width: 70%;
+}
+
+.favorites-section {
+  margin-top: 5rem;
+  font-size: 1.6rem;
+}
+
+.fav {
+  margin: 1rem;
+  padding: .5rem;
 }
