@@ -126,7 +126,7 @@ const addFavorite = () => {
     updatedQuotes = [...currentQuotes, newQuote];
   }
   localStorage.setItem('quotes', JSON.stringify(updatedQuotes));
-  showAlert('success', 'Quote added to your favorites!')
+  showAlert('success', 'Quote added to your favorites!');
   
   return printFavorites();
 };
@@ -139,7 +139,7 @@ const removeFavorite = (element) => {
   const updatedQuotes = quotes.filter((quote, index) => index !== favIndex);
   if (!updatedQuotes.length) return clearFavorites();
   localStorage.setItem('quotes', JSON.stringify(updatedQuotes));
-  showAlert('success', 'Quote removed from favorites!')
+  showAlert('success', 'Quote removed from favorites!');
 
   return printFavorites();
 };
@@ -147,7 +147,7 @@ const removeFavorite = (element) => {
 // FUNCTION - clears all quotes in localStorage
 const clearFavorites = () => {
   localStorage.removeItem('quotes');
-  showAlert('success', 'All quotes removed from favorites!')
+  showAlert('success', 'All quotes removed from favorites!');
 
   return printFavorites();
 };
