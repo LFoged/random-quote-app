@@ -55,7 +55,9 @@ const getQuote = (quoteType) => {
       );
       document.body.appendChild(scriptElement);
       // remove appended script immediately
-      if (document.querySelector('.json-p')) return document.body.lastChild.remove();
+      if (document.querySelector('.json-p')) {
+        return document.body.lastChild.remove();
+      }
     },
 
     program: () => {
