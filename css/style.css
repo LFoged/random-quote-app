@@ -1,3 +1,4 @@
+/* Simple reset */
 *,
 *::before,
 *::after {
@@ -6,35 +7,108 @@
   box-sizing: inherit;
 }
 
+/* Set 1rem = 10px (10rem / 16px = .625%) */
 html {
   font-size: 62.5%;
 }
 
+
+/* Elements */
 body {
   box-sizing: border-box;
   font-family: Helvetica, sans-serif;
-  background: #ec008c;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #fc6767, #ec008c);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #fc6767, #ec008c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  height: 100%vh;
+  background: #FF416C;  /* fallback for old browsers */
+  background: #ffb347;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #ffcc33, #ffb347);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #ffcc33, #ffb347); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  height: 100%;
 }
 
+h1,
+h3,
+p {
+  letter-spacing: .08rem;
+}
+
+a:link,
+a:visited {
+  text-decoration: none; 
+}
+
+
+/* Classes */
 .container {
  text-align: center;
  margin: 3.5rem auto;
- max-width: 70%;
+ max-width: 80%;
 }
 
 .display-section {
-  margin: 2rem;
+  padding: 2rem;
+  margin: 6rem 3rem 3rem;
+  max-width: 70vw;
+}
+
+.display-quote {
+  font-size: 2.7rem;
+  color: rgb(255, 255, 255);
+  line-height: 140%;
+  margin-bottom: 2rem;
+}
+
+.display-author {
+  color: rgb(25, 28, 230);
+  font-size: 1.7rem;
+}
+
+.btn {
+  font-size: 1.5rem;
+  color: rgb(25, 28, 230);
+  letter-spacing: .1rem;
+  background-color: transparent;
+  border: .05rem solid rgb(25, 28, 230);
+  border-radius: .6rem;
+  padding: .9rem 1.5rem;
+  margin: 2rem .4rem;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0rem .25rem .2rem rgba(0,0,0,.2);
+  transition: all ease-out 0.1s;
+}
+
+.link {
+  background-color:  rgb(25, 28, 230);
+  color: rgb(255, 255, 255);
+  border: .05rem solid rgb(25, 28, 230);
+}
+
+.btn:hover {
+  transform: translateY(-.27rem);
+  box-shadow: 0 1.2rem 1.6rem rgba(0,0,0,.2);
+}
+
+.btn:active {
+  transform: translateY(-.1rem);
+  box-shadow: 0 .7rem 1rem rgba(0,0,0,.3);
 }
 
 .favorites-section {
-  margin-top: 5rem;
+  margin-top: 2.5rem;
   font-size: 1.6rem;
 }
 
 .fav {
   margin: 1rem;
   padding: .5rem;
+}
+
+.fav-remove {
+  font-display: center;
+  font-size: 1rem;
+  color: white;
+  border: .1rem solid white;
+  background-color: darkslategray;
+  padding: .4rem .8rem;
+  margin: 1rem;
+  cursor: pointer;
 }
