@@ -45,44 +45,44 @@ a:visited {
 
 .display-section {
   padding: 2rem;
-  margin: 6rem 3rem 3rem;
+  margin: 6rem 3rem 2rem;
   max-width: 70vw;
 }
 
 .display-quote {
-  font-size: 2.7rem;
-  color: rgb(255, 255, 255);
+  font-size: 3rem;
+  color: rgb(25, 28, 230);
+  font-weight: 500;
+  /* text-shadow: -.2rem .2rem rgb(25, 28, 230), -.1rem .2rem rgb(25, 28, 230); */
   line-height: 140%;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .display-author {
-  color: rgb(25, 28, 230);
   font-size: 1.7rem;
+  color: rgb(25, 28, 230);
+  font-weight: 400;
 }
 
 .btn {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: rgb(25, 28, 230);
   letter-spacing: .1rem;
   background-color: transparent;
   border: .05rem solid rgb(25, 28, 230);
   border-radius: .6rem;
   padding: .9rem 1.5rem;
-  margin: 2rem .4rem;
+  margin: .8rem .4rem;
   cursor: pointer;
   outline: none;
   box-shadow: 0rem .25rem .2rem rgba(0,0,0,.2);
   transition: all ease-out 0.1s;
 }
 
-.link {
-  background-color:  rgb(25, 28, 230);
-  color: rgb(255, 255, 255);
-  border: .05rem solid rgb(25, 28, 230);
-}
-
 .btn:hover {
+  color: rgb(255, 255, 255);
+  background-color: rgb(25, 28, 230);
+  border: .05rem solid rgb(25, 28, 230);
   transform: translateY(-.27rem);
   box-shadow: 0 1.2rem 1.6rem rgba(0,0,0,.2);
 }
@@ -92,23 +92,65 @@ a:visited {
   box-shadow: 0 .7rem 1rem rgba(0,0,0,.3);
 }
 
+.link {
+  display: inline-block;
+  color: rgb(44, 44, 44);
+  background-color:  transparent;
+  border: .05rem solid rgb(44, 44, 44);
+}
+
+.link:hover {
+  color: rgb(255, 255, 255);
+  background-color:  rgb(44, 44, 44);
+  border: .05rem solid rgb(44, 44, 44);
+}
+
+.fav-add {
+  color: rgb(4, 134, 0);
+  border: .05rem solid rgb(4, 134, 0);
+}
+
+.fav-add:hover {
+  color: rgb(255, 255, 255);
+  background-color:  rgb(4, 134, 0);
+  border: .05rem solid rgb(4, 134, 0);
+}
+
+.fav-clear {
+  color: rgb(230, 14, 14);
+  border: .05rem solid rgb(230, 14, 14);
+}
+
+.fav-clear:hover {
+  color: rgb(255, 255, 255);
+  background-color:  rgb(230, 14, 14);
+  border: .05rem solid rgb(230, 14, 14);
+}
+
 .favorites-section {
-  margin-top: 2.5rem;
+  margin-top: 4rem;
   font-size: 1.6rem;
 }
 
 .fav {
-  margin: 1rem;
+  margin: .6rem;
   padding: .5rem;
 }
 
 .fav-remove {
+  display: inline-block;
   font-display: center;
-  font-size: 1rem;
-  color: white;
-  border: .1rem solid white;
-  background-color: darkslategray;
-  padding: .4rem .8rem;
-  margin: 1rem;
+  font-size: 1.1rem;
+  color: rgb(230, 14, 14);
+  background-color: transparent;
+  border: .1rem solid rgb(230, 14, 14);
+  padding: .5rem .85rem;
+  margin: 0 1rem;
   cursor: pointer;
+}
+
+.fav-remove:hover {
+  color: rgb(255, 255, 255);
+  background-color: rgb(230, 14, 14);
+  border: .1rem solid rgb(230, 14, 14);
 }
