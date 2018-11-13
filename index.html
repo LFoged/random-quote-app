@@ -10,19 +10,15 @@
 </head>
 <body>
   <div class="container">
+    <header class="alert-section"></header>
     <main>
-      <section class="display-section">
-        <h1 class="display-quote"></h1>
-        <h3 class="display-author"></h3>
-      </section>
-
+      <section class="display-section"></section>
       <section class="buttons">
         <section class="quote-buttons">
           <button class="btn" id="random">Random</button>
           <button class="btn" id="inspire">Inspirational</button>
           <button class="btn" id="program">Programming</button>
         </section>
-
         <section class="links">
             <a href="" class="btn link" id="tweet-link" target="_blank">
               Tweet Quote
@@ -31,7 +27,6 @@
               Wiki Author
             </a>
         </section>
-
         <section class="fav-buttons">
           <button class="btn fav-add" id="new-fav">Add to Favorites</button>
           <button class="btn fav-clear" id="clear-all-fav" hidden>
@@ -40,9 +35,8 @@
         </section>
       </section>
     </main>
-
-    <section class="favorites-section"></section>
+    <footer class="favorites-section"></footer>
   </div>
-  <script src="./app.js"></script>
+  <script src="./app.js" defer></script>
 </body>
 </html>

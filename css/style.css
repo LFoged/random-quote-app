@@ -50,7 +50,7 @@ a:visited {
 }
 
 .display-quote {
-  font-size: 3rem;
+  font-size: 3.2rem;
   color: rgb(25, 28, 230);
   font-weight: 500;
   /* text-shadow: -.2rem .2rem rgb(25, 28, 230), -.1rem .2rem rgb(25, 28, 230); */
@@ -76,7 +76,7 @@ a:visited {
   cursor: pointer;
   outline: none;
   box-shadow: 0rem .25rem .2rem rgba(0,0,0,.2);
-  transition: all ease-out 0.1s;
+  transition: all ease-out 0.2s;
 }
 
 .btn:hover {
