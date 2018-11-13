@@ -14,13 +14,7 @@ const GLOBAL = (() => {
     clearFavBtn: doc.querySelector('#clear-all-fav')
   });
 
-  // return specified attribute of an element
-  const getElAttr = (elQuerySelector, attr) => {
-    return doc.querySelector(elQuerySelector)[attr]
-      || alertCtrl('error', 'Element or Attribute Not Found');
-  };
-
-  // create Array of elements. Used by 'makeTemplate'
+  /* private functions */
   const createEls = (elArr = []) => {
     const els = elArr.map((elObj) => {
       const el = doc.createElement(elObj.el);
@@ -33,11 +27,16 @@ const GLOBAL = (() => {
     return els;
   };
 
-  // remove single element from DOM in x time. Used by 'alert.ctrl'
   const removeEl = (elQuerySelector, delay) => {
     return setTimeout(() => {
       doc.querySelector(elQuerySelector).remove();
     }, delay);
+  };
+
+  /* public functions */
+  const getElAttr = (elQuerySelector, attr) => {
+    return doc.querySelector(elQuerySelector)[attr]
+      || alertCtrl('error', 'Element or Attribute Not Found');
   };
 
   // recursively remove HTML childNodes from element
@@ -117,7 +116,6 @@ const GLOBAL = (() => {
     }
   };
 
-  // map Array of elements & append each to a document fragment
   const appendToFragment = (elArr = []) => {
     const fragment = doc.createDocumentFragment();
     elArr.map((el) => fragment.appendChild(el));
@@ -125,7 +123,6 @@ const GLOBAL = (() => {
     return fragment;
   };
 
-  // append fragment (containing element(s)) to specified DOM 'target'
   const printer = (target, fragment) => target.appendChild(fragment);
 
   return Object.freeze({
@@ -151,6 +148,7 @@ const quoteModule = ((GLOBAL) => {
     printer
   } = GLOBAL;
 
+  /* public function */
   // set URL for request, determine type of request to make and send request
   const prepReq = (quoteType) => {
     const apiUrls = {
@@ -164,6 +162,7 @@ const quoteModule = ((GLOBAL) => {
     return (useJsonP.includes(quoteType)) ? jsonPReq(url) : fetchReq(url); 
   };
 
+  /* private functions */
   const fetchReq = (url) => {
     return fetch(url)
       .then((res) => res.json())
@@ -199,12 +198,13 @@ const quoteModule = ((GLOBAL) => {
         quoteObj.author.replace(/\s/, '_')
       }`;
     }
+    
     return tweetLink.href = `https://twitter.com/home/?status="${
       quoteObj.quote}" - ${quoteObj.author
       }`;
   };
 
-  // ctrl flow after response (containing quote) received
+  // ctrl flow after response => NOTE: public function so jsonP res can find it
   const quoteCtrl = (rawResponse) => {
     const formattedQuote = formatQuote(rawResponse);
     const template = makeTemplate('quote')(formattedQuote);
@@ -273,7 +273,7 @@ const favoriteModule = ((GLOBAL) => {
     }
     saveQuotes(updatedQuotes);
     alertCtrl('success', 'Quote added to your favorites!');
-    
+
     return printAll();
   };
 
