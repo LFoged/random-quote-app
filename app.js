@@ -140,7 +140,7 @@ const GLOBAL = (() => {
 })();
 
 
-/* FUNCTIONS RELATED TO GETTING & PROCESSING QUOTE / DATA */
+/* FUNCTIONS FOR GETTING & PROCESSING QUOTES */
 const quoteModule = ((GLOBAL) => {
   const {displaySection, wikiLink, tweetLink} = GLOBAL.els;
   const {
@@ -188,13 +188,13 @@ const quoteModule = ((GLOBAL) => {
     }
   };
 
-  // set href on Wiki search & Tweet quote links. Hide wiki link if no author
-  const setLinks = (quoteObj) => {
+  const setWikiTweetLinks = (quoteObj) => {
     const author = quoteObj.author.toLowerCase();
     if (author === 'unknown' || author === 'anonymous') {
       wikiLink.style.display = 'none';
       wikiLink.href = '';
     } else {
+      wikiLink.style.display = 'inline-block';
       wikiLink.href = `https://en.wikipedia.org/wiki/${
         quoteObj.author.replace(/\s/, '_')
       }`;
@@ -210,7 +210,7 @@ const quoteModule = ((GLOBAL) => {
     const template = makeTemplate('quote')(formattedQuote);
     const fragment = appendToFragment(template);
     removeKids(displaySection);
-    setLinks(formattedQuote)
+    setWikiTweetLinks(formattedQuote)
     
     return printer(displaySection, fragment);
   };
@@ -219,7 +219,7 @@ const quoteModule = ((GLOBAL) => {
 })(GLOBAL);
 
 
-/* */
+/* FUNCTIONS FOR MANAGING DATA SAVED TO localStorage */
 const favoriteModule = ((GLOBAL) => {
   const {favSection, clearFavBtn} = GLOBAL.els;
   const {
@@ -232,12 +232,13 @@ const favoriteModule = ((GLOBAL) => {
   } = GLOBAL;
   const store = localStorage;
 
+  /* private functions */
   const getQuotes = () => JSON.parse(store.getItem('quotes'));
   const saveQuotes = (quotes) => {
     return store.setItem('quotes', JSON.stringify(quotes));
   };
   
-  // print all favorites
+  /* public functions */
   const printAll = () => {
     removeKids(favSection);
     if (!store.length) return clearFavBtn.hidden = true;
@@ -249,7 +250,6 @@ const favoriteModule = ((GLOBAL) => {
     return printer(favSection, fragment);
   };
 
-  // save current quote to localStorage (add to favorites)
   const addOne = () => {
     const maxQuotes = 6;
     const currentQuotes = getQuotes();
@@ -277,7 +277,6 @@ const favoriteModule = ((GLOBAL) => {
     return printAll();
   };
 
-  // remove a quote from localStorage 
   const removeOne = (element) => {
     const favDiv = element.parentElement.parentElement;
     const favIndex = parseInt(favDiv.className.split(' ').slice(1));
@@ -290,7 +289,6 @@ const favoriteModule = ((GLOBAL) => {
     return printAll();
   };
 
-  // remove all quotes from localStorage
   const removeAll = () => {
     store.removeItem('quotes');
     alertCtrl('success', 'All quotes removed from favorites!');
@@ -304,13 +302,13 @@ const favoriteModule = ((GLOBAL) => {
 
 // initialize program
 const init = ((els, prepReq, favoriteModule) => {
-  const {quoteButtons, newFavBtn, clearFavBtn, favSection, wikiLink} = els;
+  const {quoteButtons, newFavBtn, clearFavBtn, favSection} = els;
   const {printAll, addOne, removeOne, removeAll} = favoriteModule;
 
   prepReq('random');
-  // print all favorites if any in localStorage
   if (localStorage.length) printAll();
-  // event listeners
+
+  /* event listeners */
   quoteButtons.addEventListener('click', (e) => {
     if (e.target.tagName === 'BUTTON') return prepReq(e.target.id);
   });  
