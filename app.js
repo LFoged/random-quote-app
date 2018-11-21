@@ -14,7 +14,6 @@ const GLOBAL = (() => {
     clearFavBtn: doc.querySelector('#clear-all-fav')
   });
 
-  /* private functions */
   const createEls = (elArr = []) => {
     const els = elArr.map((elObj) => {
       const el = doc.createElement(elObj.el);
@@ -33,7 +32,6 @@ const GLOBAL = (() => {
     }, delay);
   };
 
-  /* public functions */
   const getElAttr = (elQuerySelector, attr) => {
     return doc.querySelector(elQuerySelector)[attr]
       || alertCtrl('error', 'Element or Attribute Not Found');
@@ -148,7 +146,6 @@ const quoteModule = ((GLOBAL) => {
     printer
   } = GLOBAL;
 
-  /* public function */
   // set URL for request, determine type of request to make and send request
   const prepReq = (quoteType) => {
     const apiUrls = {
@@ -163,7 +160,6 @@ const quoteModule = ((GLOBAL) => {
     return (useJsonP.includes(quoteType)) ? jsonPReq(url) : fetchReq(url); 
   };
 
-  /* private functions */
   const fetchReq = (url) => {
     return fetch(url)
       .then((res) => res.json())
@@ -234,13 +230,11 @@ const favoriteModule = ((GLOBAL) => {
   } = GLOBAL;
   const store = localStorage;
 
-  /* private functions */
   const getQuotes = () => JSON.parse(store.getItem('quotes'));
   const saveQuotes = (quotes) => {
     return store.setItem('quotes', JSON.stringify(quotes));
   };
   
-  /* public functions */
   const printAll = () => {
     removeKids(favSection);
     if (!store.length) return clearFavBtn.hidden = true;

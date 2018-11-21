@@ -24,7 +24,7 @@ A user can:
 
 #### Notes
 - 'Revealing Module' pattern
-- Uses JSONP requests for 'inspirational' & 'programming' category quotes bc of API CORS issues. Fetch request for 'random' category quotes. 
+- Uses JSONP requests for 'inspirational' category quotes bc of API CORS issues. Fetch request for other categories. 
 
 ### Author
 Louis Foged
