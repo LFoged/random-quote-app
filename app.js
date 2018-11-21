@@ -87,7 +87,7 @@ const GLOBAL = (() => {
           {
             el: 'p',
             class: 'fav-text',
-            attr: {name: 'textContent', val: `"${quote.quote}" - ${quote.author}`}
+            attr: {name: 'textContent', val: `"${quote.quote}" ${quote.author}`}
           },
           {
             el: 'span',
@@ -112,7 +112,7 @@ const GLOBAL = (() => {
       const fragment = appendToFragment([template]);
       printer(els.alertSection, fragment);
       
-      return removeEl('.alert', 2000);
+      return removeEl('.alert', 2300);
     }
   };
 
@@ -272,7 +272,7 @@ const favoriteModule = ((GLOBAL) => {
       updatedQuotes = [...currentQuotes, newQuote];
     }
     saveQuotes(updatedQuotes);
-    alertCtrl('success', 'Quote added to your favorites!');
+    alertCtrl('success', 'Quote added to favorites!');
 
     return printAll();
   };
@@ -301,12 +301,22 @@ const favoriteModule = ((GLOBAL) => {
 
 
 // initialize program
-const init = ((els, prepReq, favoriteModule) => {
+const init = ((els, alertCtrl, prepReq, favoriteModule) => {
   const {quoteButtons, newFavBtn, clearFavBtn, favSection} = els;
   const {printAll, addOne, removeOne, removeAll} = favoriteModule;
 
+  // fetch 'random' quote on load & print any saved favorites
   prepReq('random');
   if (localStorage.length) printAll();
+
+  // print an error msg to screen if no quote 2sec after load
+  setTimeout(() => {
+    if (!document.querySelector('.display-quote')) {
+      const errMsg = 'There might be a request error. Please try again'
+
+      return alertCtrl('error', errMsg);
+    }
+  }, 2000);
 
   /* event listeners */
   quoteButtons.addEventListener('click', (e) => {
@@ -319,4 +329,4 @@ const init = ((els, prepReq, favoriteModule) => {
       return removeOne(e.target);
     }
   });
-})(GLOBAL.els, quoteModule.prepReq, favoriteModule);
+})(GLOBAL.els, GLOBAL.alertCtrl, quoteModule.prepReq, favoriteModule);
