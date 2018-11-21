@@ -152,12 +152,13 @@ const quoteModule = ((GLOBAL) => {
   // set URL for request, determine type of request to make and send request
   const prepReq = (quoteType) => {
     const apiUrls = {
-      random: 'https://favqs.com/api/qotd',
-      program: 'http://quotes.stormconsultancy.co.uk/quotes/random.json?callback=quoteModule.quoteCtrl',
-      inspire: `https://api.forismatic.com/api/1.0/?method=getQuote&format=jsonp&lang=en&jsonp=quoteModule.quoteCtrl`
+      qotd: 'https://favqs.com/api/qotd',
+      inspire: `https://api.forismatic.com/api/1.0/?method=getQuote&format=jsonp&lang=en&jsonp=quoteModule.quoteCtrl`,
+      random: 'https://talaikis.com/api/quotes/random/',
+      got: 'https://got-quotes.herokuapp.com/quotes'
     };
     const url = apiUrls[quoteType];
-    const useJsonP = ['inspire', 'program'];
+    const useJsonP = ['inspire'];
 
     return (useJsonP.includes(quoteType)) ? jsonPReq(url) : fetchReq(url); 
   };
@@ -182,8 +183,9 @@ const quoteModule = ((GLOBAL) => {
     return {
       quote: quote.quoteText || quote.quote.body || quote.quote,
       author: ((quote.quoteAuthor === '') ? 'Unknown' : quote.quoteAuthor)
-        || quote.quote.author 
+        || quote.quote.author
         || quote.author
+        || quote.character
     }
   };
 
