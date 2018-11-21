@@ -1,6 +1,6 @@
 'use strict';
 
-/* METHODS USED THROUGHOUT APP */
+/* FUNCTIONS & VARIABLES USED THROUGHOUT APP */
 const GLOBAL = (() => {
   const doc = document;
   const els = Object.freeze({
