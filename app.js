@@ -158,10 +158,10 @@ const quoteModule = ((GLOBAL) => {
       qotd: 'https://favqs.com/api/qotd',
       inspire: `https://api.forismatic.com/api/1.0/?method=getQuote&format=jsonp&lang=en&jsonp=quoteModule.quoteCtrl`,
       random: 'https://talaikis.com/api/quotes/random/',
-      got: 'https://got-quotes.herokuapp.com/quotes'
+      program: 'http://quotes.stormconsultancy.co.uk/quotes/random.json?callback=quoteModule.quoteCtrl'
     };
     const url = apiUrls[quoteType];
-    const useJsonP = ['inspire'];
+    const useJsonP = ['inspire', 'program'];
 
     return (useJsonP.includes(quoteType)) ? jsonPReq(url) : fetchReq(url); 
   };

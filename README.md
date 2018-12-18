@@ -3,7 +3,7 @@
 ### [See it live](https://lfoged.github.io/random-ramblings/)
 ### Description
 Random quote app.
-See 'random', 'inspirational' or 'programming' quotes & store up to 6 'favorite quotes' in local storage.
+See 'quote of the day', 'random', 'inspirational' or 'programming' quotes & store up to 12 'favorite quotes' in local storage.
 
 ### User stories
 A user can:
@@ -24,7 +24,7 @@ A user can:
 
 #### Notes
 - 'Revealing Module' pattern
-- Uses JSONP requests for 'inspirational' category quotes bc of API CORS issues. Fetch request for other categories. 
+- Uses JSONP (vanilla) for some requests to get around API CORS issues. Fetch request for others. 
 
 ### Author
 Louis Foged
