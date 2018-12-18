@@ -253,7 +253,7 @@ const favoriteModule = ((GLOBAL) => {
   };
 
   const addOne = () => {
-    const maxQuotes = 6;
+    const maxQuotes = 12;
     const currentQuotes = getQuotes();
     const newQuote = {
       quote: getElAttr('.display-quote', 'textContent'),
