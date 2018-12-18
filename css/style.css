@@ -200,5 +200,6 @@ a:visited {
 
 .alert.success {
   background-color:  rgba(4, 134, 0, 0.8);
-  border: .75rem solid rgb(4, 134, 0);
+  border-top: .75rem solid rgb(4, 134, 0);
+  border-bottom: .75rem solid rgb(4, 134, 0);
 }
