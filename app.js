@@ -80,22 +80,28 @@ const GLOBAL = (() => {
         ]);
       },
       favorite: (quote, index) => {
-        const [favDiv, favText, favRemove] = createEls([
+        const [favDiv, favText, favAuthor, favRemove] = createEls([
           {el: 'div', class: `fav ${index}`},
           {
             el: 'p',
             class: 'fav-text',
-            attr: {name: 'textContent', val: `"${quote.quote}" ${quote.author}`}
+            attr: {name: 'textContent', val: `${quote.quote}`}
           },
           {
             el: 'span',
+            class: 'fav-author',
+            attr: {name: 'textContent', val: `- ${quote.author}`}
+          },
+          {
+            el: 'button',
             class: 'btn fav-remove',
             attr: {name: 'textContent', val: 'DELETE'}
           }
         ]);
-        favText.appendChild(favRemove);
+        favText.appendChild(favAuthor);
         favDiv.appendChild(favText);
-    
+        favDiv.appendChild(favRemove);
+
         return favDiv;
       }
     });
@@ -251,7 +257,7 @@ const favoriteModule = ((GLOBAL) => {
     const currentQuotes = getQuotes();
     const newQuote = {
       quote: getElAttr('.display-quote', 'textContent'),
-      author: getElAttr('.display-author', 'textContent'),
+      author: getElAttr('.display-author', 'textContent').slice(2),
     };
     let updatedQuotes;
     
@@ -274,7 +280,7 @@ const favoriteModule = ((GLOBAL) => {
   };
 
   const removeOne = (element) => {
-    const favDiv = element.parentElement.parentElement;
+    const favDiv = element.parentElement;
     const favIndex = parseInt(favDiv.className.split(' ').slice(1));
     const quotes = getQuotes();
     const updatedQuotes = quotes.filter((quote, index) => index !== favIndex);
@@ -321,7 +327,7 @@ const init = ((els, alertCtrl, prepReq, favoriteModule) => {
   newFavBtn.addEventListener('click', addOne);
   clearFavBtn.addEventListener('click', removeAll);
   favSection.addEventListener('click', (e) => {
-    if (e.target.className === 'btn fav-remove') {
+    if (e.target.tagName === 'BUTTON') {
       return removeOne(e.target);
     }
   });

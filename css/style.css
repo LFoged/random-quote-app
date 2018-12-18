@@ -13,14 +13,18 @@ html {
 }
 
 
+/* Variables */
+:root {
+  --primary-blue: rgb(41, 105, 243);
+  --secondary-blue: rgb(93, 142, 248);
+  --primary-shadow: rgba(0,0,0,.2);
+}
+
+
 /* Elements */
 body {
   box-sizing: border-box;
   font-family: Helvetica, sans-serif;
-  background: #FF416C;  /* fallback for old browsers */
-  background: #ffb347;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #ffcc33, #ffb347);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #ffcc33, #ffb347); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   height: 100%;
 }
 
@@ -45,31 +49,30 @@ a:visited {
 
 .display-section {
   padding: 2rem;
-  margin: 4rem 3rem 2rem;
+  margin: 6rem 3rem 2rem;
   max-width: 70vw;
 }
 
 .display-quote {
   font-size: 3.2rem;
-  color: rgb(25, 28, 230);
+  color: var(--primary-blue);
   font-weight: 500;
-  /* text-shadow: -.2rem .2rem rgb(25, 28, 230), -.1rem .2rem rgb(25, 28, 230); */
   line-height: 140%;
   margin-bottom: 1.5rem;
 }
 
 .display-author {
   font-size: 1.7rem;
-  color: rgb(25, 28, 230);
+  color: var(--secondary-blue);
   font-weight: 400;
 }
 
 .btn {
   font-size: 1.4rem;
-  color: rgb(25, 28, 230);
+  color: var(--primary-blue);
   letter-spacing: .1rem;
   background-color: transparent;
-  border: .05rem solid rgb(25, 28, 230);
+  border: .05rem solid var(--primary-blue);
   border-radius: .6rem;
   padding: .9rem 1.5rem;
   margin: .8rem .4rem;
@@ -81,8 +84,8 @@ a:visited {
 
 .btn:hover {
   color: rgb(255, 255, 255);
-  background-color: rgb(25, 28, 230);
-  border: .05rem solid rgb(25, 28, 230);
+  background-color: var(--primary-blue);
+  border: .05rem solid var(--primary-blue);
   transform: translateY(-.27rem);
   box-shadow: 0 1.2rem 1.6rem rgba(0,0,0,.2);
 }
@@ -116,43 +119,69 @@ a:visited {
   border: .05rem solid rgb(4, 134, 0);
 }
 
-.fav-clear {
+.fav-clear,
+.fav-remove {
   color: rgb(230, 14, 14);
   border: .05rem solid rgb(230, 14, 14);
 }
 
-.fav-clear:hover {
+.fav-clear:hover,
+.fav-remove:hover {
   color: rgb(255, 255, 255);
   background-color:  rgb(230, 14, 14);
   border: .05rem solid rgb(230, 14, 14);
 }
 
 .favorites-section {
-  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 4rem 1rem 2rem;
   font-size: 1.6rem;
 }
 
 .fav {
-  margin: .6rem;
-  padding: .5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(250, 250, 250);
+  text-align: center;
+  border: .1rem solid rgb(230, 230, 230);
+  border-radius: .5rem;
+  max-width: 25rem;
+  margin: 1rem .7rem;
+  padding: 3rem 1.2rem 1rem;
+  box-shadow: 0rem .25rem .2rem rgba(0,0,0,.4);
+}
+
+.fav-text {
+  font-size: 1.6rem;
+  color: rgb(82, 82, 82);
+}
+
+.fav-author {
+  display: block;
+  color: rgb(145, 145, 145);
+  padding: 1rem 0 2rem;
 }
 
 .fav-remove {
-  display: inline-block;
+  display: block;
   text-align: center;
-  font-size: 1.1rem;
-  color: rgb(230, 14, 14);
-  background-color: transparent;
-  border: .1rem solid rgb(230, 14, 14);
-  padding: .5rem .85rem;
-  margin: 0 1rem;
-  cursor: pointer;
+  font-size: 1.2rem;
+  width: 80%;
 }
 
-.fav-remove:hover {
+.btn .fav-remove:hover {
   color: rgb(255, 255, 255);
   background-color: rgb(230, 14, 14);
   border: .1rem solid rgb(230, 14, 14);
+  transform: none;
+}
+
+.btn .fav-remove:active {
+  transform: none;
 }
 
 .alert-msg {
@@ -164,9 +193,10 @@ a:visited {
 }
 
 .alert.error {
-  background-color: rgb(230, 14, 14);
+  background-color: rgba(255, 0, 0, 0.75);
 }
 
 .alert.success {
-  background-color:  rgb(4, 134, 0);
+  background-color:  rgba(4, 134, 0, 0.8);
+  border: .3rem solid rgb(4, 134, 0);
 }
