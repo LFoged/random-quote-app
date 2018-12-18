@@ -8,9 +8,9 @@ See 'random', 'inspirational' or 'programming' quotes & store up to 6 'favorite 
 ### User stories
 A user can:
 1. click a button to see a:
--- random quote from a random topic 
--- random inspirational quote
--- random programming quote
+- random quote from a random topic 
+- random inspirational quote
+- random programming quote
 2. click a button to tweet quote
 3. click a button and be taken to quote author's Wikipedia page
 4. save up to 12 quotes in a list of 'favorites' (local storage), that will be displayed
