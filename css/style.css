@@ -42,19 +42,22 @@ a:visited {
 
 /* Classes */
 .container {
- text-align: center;
- margin: 3.5rem auto;
- max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 3.5rem auto;
+  max-width: 95%;
 }
 
 .display-section {
-  padding: 2rem;
-  margin: 6rem 3rem 2rem;
+  padding: 1rem;
+  margin: 4.5rem 1rem 3rem;
   max-width: 70vw;
 }
 
 .display-quote {
-  font-size: 3.2rem;
+  font-size: 3.5rem;
   color: var(--primary-blue);
   font-weight: 500;
   line-height: 140%;
@@ -74,7 +77,7 @@ a:visited {
   background-color: transparent;
   border: .05rem solid var(--primary-blue);
   border-radius: .6rem;
-  padding: .9rem 1.5rem;
+  padding: 1.1rem 1.5rem;
   margin: .8rem .4rem;
   cursor: pointer;
   outline: none;
@@ -136,7 +139,7 @@ a:visited {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  margin: 5rem 1rem 2rem;
+  margin: 5rem 1rem 1rem;
   font-size: 1.6rem;
 }
 
@@ -150,13 +153,14 @@ a:visited {
   text-align: center;
   border: .1rem solid rgb(230, 230, 230);
   border-radius: .5rem;
-  max-width: 33%;
+  width: 31%;
   margin: 1rem .7rem;
   padding: 3rem 1.2rem 1rem;
 }
 
 .fav-text {
   font-size: 1.6rem;
+  overflow: auto;
   color: rgb(82, 82, 82);
 }
 
@@ -170,7 +174,7 @@ a:visited {
   display: block;
   text-align: center;
   font-size: 1.2rem;
-  width: 80%;
+  width: 90%;
 }
 
 .btn .fav-remove:hover {
@@ -189,7 +193,7 @@ a:visited {
   font-size: 1.8rem;
   font-weight: 100;
   color: rgb(255, 255, 255);
-  padding: 1rem;
+  padding: 1.5rem;
 }
 
 .alert.error {

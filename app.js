@@ -116,7 +116,7 @@ const GLOBAL = (() => {
       const fragment = appendToFragment([template]);
       printer(els.alertSection, fragment);
       
-      return removeEl('.alert', 2300);
+      return removeEl('.alert', 2100);
     }
   };
 
