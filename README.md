@@ -3,14 +3,14 @@
 ### [See it live](https://lfoged.github.io/random-ramblings/)
 ### Description
 Random quote app.
-See 'quote of the day', 'random', 'inspirational' or 'programming' quotes & store up to 12 'favorite quotes' in local storage.
+See 'quote of the day', 'random' or 'inspirational' quotes & store up to 12 'favorite quotes' in local storage.
 
 ### User stories
 A user can:
 1. click a button to see a:
+- previous 'quote of the day'
 - random quote from a random topic 
 - random inspirational quote
-- random programming quote
 2. click a button to tweet quote
 3. click a button and be taken to quote author's Wikipedia page
 4. save up to 12 quotes in a list of 'favorites' (local storage), that will be displayed
