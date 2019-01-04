@@ -17,6 +17,9 @@ html {
 :root {
   --primary-blue: rgb(41, 105, 243);
   --secondary-blue: rgb(93, 142, 248);
+  --primary-green: rgb(4, 134, 0);
+  --primary-red: rgb(230, 14, 14);
+  --primary-white: rgb(255, 255, 255);
   --primary-shadow: rgba(0,0,0,.2);
 }
 
@@ -86,7 +89,7 @@ a:visited {
 }
 
 .btn:hover {
-  color: rgb(255, 255, 255);
+  color: var(--primary-white);
   background-color: var(--primary-blue);
   border: .05rem solid var(--primary-blue);
   transform: translateY(-.27rem);
@@ -106,33 +109,33 @@ a:visited {
 }
 
 .link:hover {
-  color: rgb(255, 255, 255);
+  color: var(--primary-white);
   background-color:  rgb(44, 44, 44);
   border: .05rem solid rgb(44, 44, 44);
 }
 
 .fav-add {
-  color: rgb(4, 134, 0);
-  border: .05rem solid rgb(4, 134, 0);
+  color: var(--primary-green);
+  border: .05rem solid var(--primary-green);
 }
 
 .fav-add:hover {
-  color: rgb(255, 255, 255);
-  background-color:  rgb(4, 134, 0);
-  border: .05rem solid rgb(4, 134, 0);
+  color: var(--primary-white);
+  background-color:  var(--primary-green);
+  border: .05rem solid var(--primary-green);
 }
 
 .fav-clear,
 .fav-remove {
-  color: rgb(230, 14, 14);
-  border: .05rem solid rgb(230, 14, 14);
+  color: var(--primary-red);
+  border: .05rem solid var(--primary-red);
 }
 
 .fav-clear:hover,
 .fav-remove:hover {
-  color: rgb(255, 255, 255);
-  background-color:  rgb(230, 14, 14);
-  border: .05rem solid rgb(230, 14, 14);
+  color: var(--primary-white);
+  background-color:  var(--primary-red);
+  border: .05rem solid var(--primary-red);
 }
 
 .favorites-section {
@@ -178,9 +181,9 @@ a:visited {
 }
 
 .btn .fav-remove:hover {
-  color: rgb(255, 255, 255);
-  background-color: rgb(230, 14, 14);
-  border: .1rem solid rgb(230, 14, 14);
+  color: var(--primary-white);
+  background-color: var(--primary-red);
+  border: .1rem solid var(--primary-red);
   transform: none;
 }
 
@@ -192,7 +195,7 @@ a:visited {
   text-align: center;
   font-size: 1.8rem;
   font-weight: 100;
-  color: rgb(255, 255, 255);
+  color: var(--primary-white);
   padding: 1.5rem;
 }
 
