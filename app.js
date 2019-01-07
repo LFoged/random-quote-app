@@ -18,7 +18,7 @@ const UTILS = (() => {
     return els;
   };
 
-  // remove element after x millisecond delay - for alert
+  // remove element after x millisecond delay - used by alert
   const removeEl = (elQuerySelector, delay) => {
     return setTimeout(() => {
       _doc.querySelector(elQuerySelector).remove();
@@ -153,24 +153,58 @@ const DOM = ((UTILS) => {
 
 
 /* FUNCTIONS FOR GETTING & PROCESSING QUOTES */
-const QUOTES = ((UTILS, DOM) => {
-  const {removeKids, appendToFragment} = UTILS;
-  const {els, templates, alertCtrl, printer} = DOM;
-  const {displaySection, wikiLink, tweetLink} = els;
+const QUOTES = ((DOM) => {
+  const {els, templates, alertCtrl} = DOM;
+  const {wikiLink, tweetLink} = els;
 
+  const _fetchReq = (url, handler) => {
+    return fetch(url)
+      .then((res) => res.json())
+      .then(handler)
+      .catch((err) => alertCtrl('error', 'Request Error'));
+  };
+
+  const _jsonPReq = (url) => {
+    const [jsonPScriptEl] = templates.jsonP(url);
+    const docBody = document.body;
+    docBody.appendChild(jsonPScriptEl);
+
+    return docBody.lastChild.remove();
+  };
+
+  // set URL, determine type of request (fetch / JSONP) & make request
+  const makeReq = (quoteType, handler) => {
+    const apiUrls = {
+      random: 'https://favqs.com/api/qotd',
+      inspire: `https://api.forismatic.com/api/1.0/?method=getQuote&format=jsonp&lang=en&jsonp=INIT.quoteResponseCtrl`,
+      simpsons: 'https://thesimpsonsquoteapi.glitch.me/quotes',
+    };
+    const url = apiUrls[quoteType];
+    const useJsonP = ['inspire'];
+
+    // make request => response handled by 'INIT.quoteResponseCtrl'
+    return (useJsonP.includes(quoteType)) 
+      ? _jsonPReq(url)
+      : _fetchReq(url, handler); 
+  };
 
   // format raw response data (quote)
-  const _formatQuote = (quote) => {
+  const formatQuote = (quote) => {
+    // format 'simpsons' quotes responses
+    if (quote[0]) {
+      return {quote: quote[0].quote, author: quote[0].character};
+    } 
+
+    // format responses from all other quote types
     return {
-      quote: quote.quoteText || quote.quote.body || quote.quote,
+      quote: quote.quoteText || quote.quote.body,
       author: ((quote.quoteAuthor === '') ? 'Unknown' : quote.quoteAuthor)
         || quote.quote.author
-        || quote.character
     };
   };
 
   // manage wiki & tweet link buttons according to response quote
-  const _setWikiTweetLinks = (quoteObj) => {
+  const setWikiTweetLinks = (quoteObj) => {
     const author = quoteObj.author.toLowerCase();
     if (author === 'unknown' || author === 'anonymous') {
       wikiLink.style.display = 'none';
@@ -187,46 +221,18 @@ const QUOTES = ((UTILS, DOM) => {
       }`;
   };
 
-  // set URL, determine type of request (fetch / JSONP) & make request
-  const makeReq = (quoteType, handler) => {
-    const apiUrls = {
-      random: 'https://favqs.com/api/qotd',
-      inspire: `https://api.forismatic.com/api/1.0/?method=getQuote&format=jsonp&lang=en&jsonp=INIT.quoteResponseCtrl`,
-      got: 'https://got-quotes.herokuapp.com/quotes'
-    };
-    const url = apiUrls[quoteType];
-    const useJsonP = ['inspire'];
-
-    // make fetch or JSONP request => response handled by 'quoteResponseCtrl'
-    return (useJsonP.includes(quoteType)) ? jsonPReq(url) : fetchReq(url, handler); 
-  };
-
-  const fetchReq = (url, handler) => {
-    return fetch(url)
-      .then((res) => res.json())
-      .then(handler)
-      .catch((err) => alertCtrl('error', 'Request Error'));
-  };
-
-  const jsonPReq = (url) => {
-    const [jsonPScriptEl] = templates.jsonP(url);
-    const docBody = document.body;
-    docBody.appendChild(jsonPScriptEl);
-
-    return docBody.lastChild.remove();
-  };
-
-  return Object.freeze({ makeReq, _formatQuote, _setWikiTweetLinks });
-})(UTILS, DOM);
+  return Object.freeze({ makeReq, formatQuote, setWikiTweetLinks });
+})(DOM);
 
 
-/* FUNCTIONS FOR MANAGING DATA SAVED TO localStorage */
-const FAVORITES = ((DOM, UTILS) => {
+/* FUNCTIONS FOR MANAGING DATA SAVED TO LOCAL STORAGE */
+const FAVORITES = ((UTILS, DOM) => {
   const {els, templates, alertCtrl, printer} = DOM;
   const {favSection, clearFavBtn} = els;
   const {getElAttr, removeKids, appendToFragment} = UTILS
   const store = localStorage;
 
+  // retrieve quotes from local storage
   const getQuotes = () => JSON.parse(store.getItem('quotes'));
   const saveQuotes = (quotes) => {
     return store.setItem('quotes', JSON.stringify(quotes));
@@ -244,7 +250,7 @@ const FAVORITES = ((DOM, UTILS) => {
   };
 
   const addOne = () => {
-    const maxQuotes = 12;
+    const maxQuotes = 20;
     const currentQuotes = getQuotes();
     const newQuote = {
       quote: getElAttr('.display-quote', 'textContent'),
@@ -290,47 +296,40 @@ const FAVORITES = ((DOM, UTILS) => {
   };
 
   return Object.freeze({printAll, addOne, removeOne, removeAll});
-})(DOM, UTILS);
+})(UTILS, DOM);
 
 
 // initialize program
-const INIT = ((DOM, QUOTES, FAVORITES) => {
+const INIT = ((UTILS, DOM, QUOTES, FAVORITES) => {
+  const {removeKids, appendToFragment} = UTILS;
   const {els, alertCtrl, templates, printer} = DOM;
-  const {displaySection, quoteButtons, newFavBtn, clearFavBtn, favSection} = els;
-  const {makeReq, _formatQuote, _setWikiTweetLinks} = QUOTES;
+  const {makeReq, formatQuote, setWikiTweetLinks} = QUOTES;
   const {printAll, addOne, removeOne, removeAll} = FAVORITES;
+  const {
+    displaySection,
+    quoteButtons,
+    newFavBtn,
+    clearFavBtn,
+    favSection
+  } = els;
 
-
-
-  // handler after response => NOTE: public function so jsonP res can find it
+  // response handler. NOTE: function is public so jsonP response can 'find' it
   const quoteResponseCtrl = (rawResponse) => {
-    const formattedQuote = _formatQuote(rawResponse);
+    const formattedQuote = formatQuote(rawResponse);
     const template = templates.quote(formattedQuote);
-    const fragment = UTILS.appendToFragment(template);
-    UTILS.removeKids(displaySection);
-    _setWikiTweetLinks(formattedQuote)
+    const fragment = appendToFragment(template);
+    removeKids(displaySection);
+    setWikiTweetLinks(formattedQuote)
     
     return printer(displaySection, fragment);
   };
 
-
-  // fetch 'random' quote on load & print any saved favorites
-  makeReq('random', quoteResponseCtrl);
-  if (localStorage.length) printAll();
-
-  // print an error msg to screen if no quote 2.5sec after load
-  setTimeout(() => {
-    if (!document.querySelector('.display-quote')) {
-      const errMsg = 'There might be a request error. Please try again'
-
-      return alertCtrl('error', errMsg);
-    }
-  }, 2500);
-
-  /* event listeners */
+  // event listeners
   quoteButtons.addEventListener('click', (e) => {
-    if (e.target.tagName === 'BUTTON') return makeReq(e.target.id, quoteResponseCtrl);
-  });  
+    if (e.target.tagName === 'BUTTON') {
+      return makeReq(e.target.id, quoteResponseCtrl);
+    }
+  });
   newFavBtn.addEventListener('click', addOne);
   clearFavBtn.addEventListener('click', removeAll);
   favSection.addEventListener('click', (e) => {
@@ -339,5 +338,18 @@ const INIT = ((DOM, QUOTES, FAVORITES) => {
     }
   });
 
+  // initiate program with 'random' quote & print any saved favorites
+  makeReq('random', quoteResponseCtrl);
+  if (localStorage.length) printAll();
+
+  // print an error msg if no quote on DOM after 2.5sec
+  setTimeout(() => {
+    if (!document.querySelector('.display-quote')) {
+      const errMsg = 'There might be a request error. Please try again'
+
+      return alertCtrl('error', errMsg);
+    }
+  }, 2500);
+
   return Object.freeze({ quoteResponseCtrl });
-})(DOM, QUOTES, FAVORITES);
+})(UTILS, DOM, QUOTES, FAVORITES);
