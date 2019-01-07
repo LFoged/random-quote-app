@@ -250,14 +250,13 @@ const FAVORITES = ((UTILS, DOM) => {
   };
 
   const addOne = () => {
-    const maxQuotes = 15;
+    const maxQuotes = 21;
     const currentQuotes = getQuotes();
     const newQuote = {
       quote: getElAttr('.display-quote', 'textContent'),
       author: getElAttr('.display-author', 'textContent').slice(2),
     };
     let updatedQuotes;
-    
     if (!currentQuotes) {
       updatedQuotes = [newQuote];
     } else {
