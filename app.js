@@ -1,6 +1,5 @@
 'use strict';
 
-
 /* UTILITY FUNCTIONS */
 const UTILS = (() => {
   const _doc = document;
@@ -18,28 +17,6 @@ const UTILS = (() => {
     return els;
   };
 
-  // remove element after x millisecond delay - used by alert
-  const removeEl = (elQuerySelector, delay) => {
-    return setTimeout(() => {
-      _doc.querySelector(elQuerySelector).remove();
-    }, delay);
-  };
-
-  // recursively remove HTML childNodes from an element
-  const removeKids = (element) => {
-    if (element.hasChildNodes()) {
-      element.removeChild(element.firstChild);
-  
-      return UTILS.removeKids(element);
-    }
-  };
-
-  // return specified attribute of an element
-  const getElAttr = (elQuerySelector, attr) => {
-    return _doc.querySelector(elQuerySelector)[attr]
-      || alertCtrl('error', 'Element or Attribute Not Found');
-  };
-
   // appends Array of elements to a document fragment
   const appendToFragment = (elArr = []) => {
     const fragment = _doc.createDocumentFragment();
@@ -48,21 +25,22 @@ const UTILS = (() => {
     return fragment;
   };
 
-  return Object.freeze({
-    createEls,
-    removeEl,
-    removeKids,
-    getElAttr,
-    appendToFragment
-  });
+  return Object.freeze({ createEls, appendToFragment });
 })();
 
 
-/* FUNCTIONS & VARIABLES THAT DIRECTLY DEAL WITH / 'TOUCH' DOM */
+/* DOM-RELATED FUNCTIONS & VARIABLES */
 const DOM = ((UTILS) => {
-  const {createEls, appendToFragment, removeEl} = UTILS;
+  const {createEls, appendToFragment} = UTILS;
   const _doc = document;
 
+  // remove element after x millisecond delay - used by alert
+  const _removeEl = (elQuerySelector, delay) => {
+    return setTimeout(() => {
+      _doc.querySelector(elQuerySelector).remove();
+    }, delay);
+  };
+  
   // DOM elements
   const els = Object.freeze({
     alertSection: _doc.querySelector('.alert-section'),
@@ -75,6 +53,21 @@ const DOM = ((UTILS) => {
     clearFavBtn: _doc.querySelector('#clear-all-fav')
   });
   
+  // return specified attribute of an element
+  const getElAttr = (elQuerySelector, attr) => {
+    return _doc.querySelector(elQuerySelector)[attr]
+      || alertCtrl('error', 'Element or Attribute Not Found');
+  };
+
+  // recursively remove HTML childNodes from an element
+  const removeKids = (element) => {
+    if (element.hasChildNodes()) {
+      element.removeChild(element.firstChild);
+  
+      return DOM.removeKids(element);
+    }
+  };
+    
   // templates for alert, quotes, etc.
   const templates = Object.freeze({
     alert: (alertType, msg = 'Oh fudge! Something Broke') => {
@@ -141,14 +134,21 @@ const DOM = ((UTILS) => {
       const fragment = appendToFragment([template]);
       printer(els.alertSection, fragment);
       
-      return removeEl('.alert', 2100);
+      return _removeEl('.alert', 2300);
     }
   };
 
   // 'prints' (appends) fragment to DOM
   const printer = (target, fragment) => target.appendChild(fragment);
 
-  return Object.freeze({ els, templates, alertCtrl, printer });
+  return Object.freeze({
+    getElAttr,
+    removeKids,
+    els,
+    templates,
+    alertCtrl,
+    printer
+  });
 })(UTILS);
 
 
@@ -188,7 +188,6 @@ const QUOTES = ((DOM) => {
       : _fetchReq(url, handler); 
   };
 
-  // format raw response data (quote)
   const formatQuote = (quote) => {
     // format 'simpsons' quotes responses
     if (quote[0]) {
@@ -227,9 +226,9 @@ const QUOTES = ((DOM) => {
 
 /* FUNCTIONS FOR MANAGING DATA SAVED TO LOCAL STORAGE */
 const FAVORITES = ((UTILS, DOM) => {
-  const {els, templates, alertCtrl, printer} = DOM;
+  const {appendToFragment} = UTILS;
+  const {els, getElAttr, removeKids, templates, alertCtrl, printer} = DOM;
   const {favSection, clearFavBtn} = els;
-  const {getElAttr, removeKids, appendToFragment} = UTILS
   const store = localStorage;
 
   // retrieve quotes from local storage
@@ -300,8 +299,8 @@ const FAVORITES = ((UTILS, DOM) => {
 
 // initialize program
 const INIT = ((UTILS, DOM, QUOTES, FAVORITES) => {
-  const {removeKids, appendToFragment} = UTILS;
-  const {els, alertCtrl, templates, printer} = DOM;
+  const {appendToFragment} = UTILS;
+  const {els, removeKids, alertCtrl, templates, printer} = DOM;
   const {makeReq, formatQuote, setWikiTweetLinks} = QUOTES;
   const {printAll, addOne, removeOne, removeAll} = FAVORITES;
   const {
