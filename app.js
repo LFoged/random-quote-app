@@ -130,16 +130,15 @@ const DOM = ((UTILS) => {
   // if no 'alert' <div> in DOM, create one, append it & remove after x secs
   const alertCtrl = (alertType, msg = 'Oh Fudge! Something Broke') => {
     if (!_doc.querySelector('.alert')) {
-      const template = templates.alert(alertType, msg);
-      const fragment = appendToFragment([template]);
-      printer(els.alertSection, fragment);
-      
-      return _removeEl('.alert', 2300);
+      const delay = 2300;
+      const alertDiv = templates.alert(alertType, msg);
+      printer(els.alertSection, alertDiv);
+      _removeEl('.alert', delay);
     }
   };
 
-  // 'prints' (appends) fragment to DOM
-  const printer = (target, fragment) => target.appendChild(fragment);
+  // 'prints' (appends) element to DOM
+  const printer = (target, element) => target.appendChild(element);
 
   return Object.freeze({
     getElAttr,
